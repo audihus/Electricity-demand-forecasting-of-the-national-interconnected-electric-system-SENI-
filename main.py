@@ -14,9 +14,10 @@ st.markdown("Model Deep Learning untuk memprediksi penggunaan listrik berdasarka
 # --- 2. LOAD ASSETS ---
 @st.cache_resource # Biar nge-loadnya sekali aja (cepet)
 def load_assets():
-    model = tf.keras.models.load_model('models\model_lstm_listrik.keras')
-    scaler_all = joblib.load('models\scaler_all.pkl')
-    scaler_target = joblib.load('models\scaler_target.pkl')
+    # Gunakan tanda '/' yang bisa dibaca di Windows maupun Linux
+    model = tf.keras.models.load_model('models/model_lstm_listrik.keras')
+    scaler_all = joblib.load('models/scaler_all.pkl')
+    scaler_target = joblib.load('models/scaler_target.pkl')
     return model, scaler_all, scaler_target
 
 model, scaler_all, scaler_target = load_assets()
