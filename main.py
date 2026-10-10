@@ -79,10 +79,19 @@ st.markdown("Sistem prediksi berbasis **Long Short-Term Memory (LSTM)** dengan m
 if uploaded_file is not None:
     # Load Data
     df = pd.read_csv(uploaded_file)
+
+    # Validasi kolom yang dibutuhkan
+    cols_input = ['active_power_mw', 'apparent_temperature_c', 'cloud_cover_percent',
+                  'is_holiday', 'is_weekend', 'hour', 'month']
+    missing_cols = [c for c in cols_input if c not in df.columns]
+    if missing_cols:
+        st.error(f"Kolom berikut tidak ditemukan dalam CSV: {missing_cols}")
+        st.stop()
+
     if 'timestamp' in df.columns:
         df['timestamp'] = pd.to_datetime(df['timestamp'])
         df = df.sort_values('timestamp')
-    
+
     # --- LOGIC SLIDER ---
     min_idx = 24
     max_idx = len(df) # Bisa sampai masa depan
@@ -98,8 +107,6 @@ if uploaded_file is not None:
             run_btn = st.button("🚀 Jalankan Prediksi", use_container_width=True, type="primary")
 
     # --- PROSES DATA ---
-    cols_input = ['active_power_mw', 'apparent_temperature_c', 'cloud_cover_percent', 'is_holiday', 'is_weekend', 'hour', 'month']
-    
     input_raw = df.iloc[selected_idx-24 : selected_idx][cols_input].values
     
     if len(input_raw) != 24:
